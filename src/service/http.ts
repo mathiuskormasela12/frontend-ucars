@@ -24,7 +24,7 @@ const http = () => {
       const { accessToken } = getState().auth;
 
       if (accessToken) {
-        config.headers['x-access-token'] = accessToken;
+        config.headers.authorization = accessToken;
       }
       return config;
     },

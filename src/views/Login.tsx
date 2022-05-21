@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 // ========== Login
 // import all modules
 import React, { useEffect, useState } from 'react';

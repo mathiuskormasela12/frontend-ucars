@@ -28,6 +28,9 @@
 		"react/function-component-definition": "off",
 		"no-tabs": "off",
 		"default-param-last": "off",
-		"react/jsx-props-no-spreading": "off"
+		"react/jsx-props-no-spreading": "off",
+		"no-nested-ternary": "off",
+		"no-underscore-dangle": "off",
+		"react/no-array-index-key": "off"
 	}
 }
