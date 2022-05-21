@@ -27,6 +27,7 @@
 		"import/prefer-default-export": "off",
 		"react/function-component-definition": "off",
 		"no-tabs": "off",
-		"default-param-last": "off"
+		"default-param-last": "off",
+		"react/jsx-props-no-spreading": "off"
 	}
 }

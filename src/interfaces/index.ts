@@ -3,3 +3,4 @@
 
 export * from './IAuthReduxStates';
 export * from './IAuthReduxAction';
+export * from './ILoginRegisterBody';
