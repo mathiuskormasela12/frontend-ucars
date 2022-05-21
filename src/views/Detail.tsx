@@ -163,6 +163,7 @@ const Detail: React.FC = () => {
               <Form.Group className="mb-3" controlId="carModel">
                 <Form.Label>Car Model</Form.Label>
                 <Form.Select value={state.carModelId} onChange={(e) => handleInput('carModelId', e)}>
+                  <option>Select Car Model</option>
                   {state.carModels.map((item: any) => (
                     <option key={item._id.toString()} value={item._id}>{item.modelName}</option>
                   ))}
