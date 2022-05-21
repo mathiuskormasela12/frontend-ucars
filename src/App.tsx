@@ -12,6 +12,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './views/Home';
 import Register from './views/Register';
 import Login from './views/Login';
+import Detail from './views/Detail';
+import AddCar from './views/Add';
 
 function App() {
   const { store, persistor } = persistedStore;
@@ -21,6 +23,8 @@ function App() {
       <PersistGate persistor={persistor}>
         <BrowserRouter>
           <Routes>
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/login" element={<Login />} />
             <Route
               path="/"
               element={(
@@ -29,8 +33,22 @@ function App() {
                 </PrivateRoute>
 							)}
             />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/login" element={<Login />} />
+            <Route
+              path="/car/add"
+              element={(
+                <PrivateRoute>
+                  <AddCar />
+                </PrivateRoute>
+							)}
+            />
+            <Route
+              path="/:id"
+              element={(
+                <PrivateRoute>
+                  <Detail />
+                </PrivateRoute>
+							)}
+            />
           </Routes>
         </BrowserRouter>
       </PersistGate>

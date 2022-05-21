@@ -14,6 +14,7 @@ import {
 } from 'react-bootstrap';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import { IGetAllCars } from '../interfaces';
 import Service from '../service';
 import { setToken } from '../redux/actions/auth';
@@ -30,6 +31,7 @@ const Home: React.FC = () => {
     keywords: String(searchParams.get('keywords') || ''),
     message: '',
     totalPages: 0,
+    refresh: false,
   });
 
   const getAllCars = async () => {
@@ -64,9 +66,46 @@ const Home: React.FC = () => {
     }
   };
 
+  const deleteCar = async (id: string) => {
+    try {
+      const { data } = await Service.deleteCar(id);
+      setState((currentState) => ({
+        ...currentState,
+        message: data.message,
+        refresh: !currentState.refresh,
+      }));
+    } catch (err: any) {
+      setState((currentState) => ({
+        ...currentState,
+        message: err
+				&& err.response
+				&& err.response.data
+				&& err.response.data.message
+          ? err.response.data.message
+          : err && err.message
+            ? err.message
+            : 'Server Error',
+      }));
+    }
+  };
+
+  const showDeleteAlert = (id: string) => {
+    Swal.fire({
+      title: 'Are you sure to delete this car?',
+      showCancelButton: true,
+      icon: 'question',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCar(id);
+      }
+    });
+  };
+
   useEffect(() => {
     getAllCars();
-  }, [state.page, state.keywords]);
+  }, [state.page, state.keywords, state.refresh]);
 
   const handleNextPage = (page: number) => {
     // navigate(`/?page=${String(page)}`);
@@ -92,6 +131,10 @@ const Home: React.FC = () => {
   const handleLogout = () => {
     dispatch(setToken('', ''));
     navigate('/auth/login');
+  };
+
+  const goTo = (path: string) => {
+    navigate(path);
   };
 
   return (
@@ -136,13 +179,17 @@ const Home: React.FC = () => {
                   {item.description.slice(0, 10).concat('...')}
                 </td>
                 <td>
-                  <Button variant="primary">Detail</Button>
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="primary" onClick={() => goTo(`/${item._id}`)}>Detail</Button>
+                  <Button variant="danger" onClick={() => showDeleteAlert(item._id)}>Delete</Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Button variant="dark" onClick={() => goTo('/car/add')}>Add Car</Button>
+        <br />
+        <br />
 
         <Pagination>
           {[...Array(state.totalPages)].map(((item, index) => (
